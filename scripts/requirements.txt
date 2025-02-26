@@ -1,0 +1,8 @@
+faster-whisper
+pydub
+pytesseract
+pyannote.audio
+torch
+timeout-decorator
+python-dotenv==1.0.0
+assemblyai==0.17.0 

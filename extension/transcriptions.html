@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Transcrições</title>
+  <style>
+    :root {
+      --bg-primary: #1a1a1a;
+      --bg-secondary: #2d2d2d;
+      --text-primary: #ffffff;
+      --text-secondary: #b3b3b3;
+      --accent-blue: #3a86ff;
+      --accent-green: #2ecc71;
+      --accent-yellow: #f1c40f;
+      --accent-red: #e74c3c;
+      --border-radius: 8px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+    }
+
+    h1 {
+      font-size: 2em;
+      margin-bottom: 1.5em;
+      color: var(--text-primary);
+      border-bottom: 2px solid var(--accent-blue);
+      padding-bottom: 0.5em;
+    }
+
+    .recording {
+      margin: 20px 0;
+      padding: 20px;
+      background-color: var(--bg-secondary);
+      border-radius: var(--border-radius);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s ease;
+    }
+
+    .recording:hover {
+      transform: translateY(-2px);
+    }
+
+    .metadata {
+      color: var(--text-secondary);
+      font-size: 0.95em;
+      margin-bottom: 15px;
+    }
+
+    .metadata strong {
+      color: var(--text-primary);
+      font-size: 1.1em;
+    }
+
+    .metadata a {
+      color: var(--accent-blue);
+      text-decoration: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .metadata a:hover {
+      opacity: 0.8;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.85em;
+      margin-left: 10px;
+      font-weight: 500;
+    }
+
+    .status-pending {
+      background-color: var(--accent-yellow);
+      color: #000000;
+    }
+
+    .status-completed {
+      background-color: var(--accent-green);
+      color: #ffffff;
+    }
+
+    .status-error {
+      background-color: var(--accent-red);
+      color: #ffffff;
+    }
+
+    .transcription {
+      margin-top: 15px;
+      padding: 15px;
+      background-color: var(--bg-primary);
+      border-radius: var(--border-radius);
+      display: none;
+      border: 1px solid #404040;
+    }
+
+    .transcription p {
+      margin-bottom: 10px;
+    }
+
+    .buttons-container {
+      margin: 15px 0;
+      display: flex;
+      gap: 12px;
+    }
+
+    .show-transcription,
+    .export-transcription {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 0.9em;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .show-transcription {
+      background-color: var(--accent-blue);
+      color: white;
+    }
+
+    .export-transcription {
+      background-color: var(--accent-green);
+      color: white;
+    }
+
+    .show-transcription:hover,
+    .export-transcription:hover {
+      transform: translateY(-1px);
+      filter: brightness(110%);
+    }
+
+    .audio-player {
+      margin-top: 15px;
+      width: 100%;
+      height: 40px;
+      border-radius: var(--border-radius);
+      background-color: var(--bg-primary);
+    }
+
+    /* Estilização do player de áudio */
+    audio::-webkit-media-controls-panel {
+      background-color: var(--bg-primary);
+    }
+
+    audio::-webkit-media-controls-current-time-display,
+    audio::-webkit-media-controls-time-remaining-display {
+      color: var(--text-primary);
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+      body {
+        padding: 15px;
+      }
+
+      .recording {
+        padding: 15px;
+      }
+
+      .buttons-container {
+        flex-direction: column;
+      }
+
+      .show-transcription,
+      .export-transcription {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    .recording-card {
+      border: 1px solid #ddd;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+    }
+
+    .recording-info {
+      margin-top: 10px;
+    }
+
+    audio {
+      width: 100%;
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Transcrições</h1>
+  <div id="recordings-container">
+    <!-- As gravações serão inseridas aqui -->
+  </div>
+  <script src="transcriptions.js"></script>
+</body>
+</html> 

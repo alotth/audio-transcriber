@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Meeting Transcriber</title>
+    <style>
+      body {
+        width: 300px;
+        padding: 10px;
+      }
+      button {
+        width: 100%;
+        padding: 8px;
+        margin: 5px 0;
+      }
+      #status {
+        margin-top: 10px;
+        color: #666;
+      }
+      #timer {
+        font-size: 1.2em;
+        text-align: center;
+        margin: 10px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Meeting Transcriber</h2>
+    <div id="timer">00:00:00</div>
+    <button id="startRecording">&#x23FA; Iniciar Gravação</button>
+    <button id="stopRecording" disabled>&#x23F9; Parar Gravação</button>
+    <div id="status"></div>
+    <button id="viewTranscriptions">&#x1F4C4; Ver Transcrições</button>
+    <script src="popup.js"></script>
+  </body>
+</html>

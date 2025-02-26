@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Transcription Manager</title>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: #f9f9f9;
+      }
+      .container {
+        max-width: 800px;
+        width: 100%;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        padding: 20px;
+      }
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #eee;
+      }
+      button {
+        padding: 8px 16px;
+        border-radius: 4px;
+        background-color: #4285f4;
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+      button:hover {
+        background-color: #3367d6;
+      }
+      .file-list {
+        border: 1px solid #eee;
+        border-radius: 4px;
+        margin-bottom: 20px;
+        max-height: 300px;
+        overflow-y: auto;
+      }
+      .file-item {
+        padding: 10px 15px;
+        border-bottom: 1px solid #eee;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .file-item:hover {
+        background-color: #f5f5f5;
+      }
+      .selected {
+        background-color: #e8f0fe;
+      }
+      .file-name {
+        flex-grow: 1;
+      }
+      .file-status {
+        margin-left: 10px;
+        padding: 3px 8px;
+        border-radius: 10px;
+        font-size: 12px;
+      }
+      .status-completed {
+        background-color: #e6f4ea;
+        color: #137333;
+      }
+      .status-pending {
+        background-color: #fff8e1;
+        color: #b06000;
+      }
+      .status-error {
+        background-color: #fce8e6;
+        color: #c5221f;
+      }
+      .player-container {
+        width: 100%;
+        margin-bottom: 20px;
+        display: none;
+        padding: 15px;
+        background-color: #f5f5f5;
+        border-radius: 4px;
+      }
+      .player-container.visible {
+        display: block;
+      }
+      .audio-controls {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        margin-top: 10px;
+      }
+      .play-button {
+        background-color: #4285f4;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        margin-right: 10px;
+      }
+      .progress-bar {
+        flex-grow: 1;
+        height: 6px;
+        background-color: #ddd;
+        border-radius: 3px;
+        position: relative;
+        cursor: pointer;
+      }
+      .progress-bar-fill {
+        height: 100%;
+        background-color: #4285f4;
+        border-radius: 3px;
+        width: 0%;
+      }
+      .time-display {
+        margin-left: 10px;
+        font-size: 12px;
+        color: #666;
+      }
+      .waveform-container {
+        width: 100%;
+        height: 60px;
+        margin-top: 10px;
+        background-color: #eee;
+        border-radius: 4px;
+        overflow: hidden;
+      }
+      #waveform {
+        width: 100%;
+        height: 100%;
+      }
+      .transcription-container {
+        border: 1px solid #eee;
+        border-radius: 4px;
+        padding: 15px;
+        max-height: 300px;
+        overflow-y: auto;
+        background-color: #f9f9f9;
+        display: none;
+        line-height: 1.6;
+      }
+      .transcription-container.visible {
+        display: block;
+      }
+      .no-items {
+        text-align: center;
+        padding: 20px;
+        color: #666;
+      }
+      .refresh-icon {
+        cursor: pointer;
+        margin-left: 10px;
+      }
+      h2, h3 {
+        color: #333;
+        margin-bottom: 15px;
+      }
+      h3 {
+        margin-top: 0;
+      }
+      .upload-section {
+        margin: 15px 0;
+        padding: 10px;
+        background-color: #f5f5f5;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      #uploadButton {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 14px;
+        margin-right: 10px;
+        cursor: pointer;
+        border-radius: 4px;
+      }
+      .upload-status {
+        margin-left: 10px;
+        font-size: 14px;
+        color: #666;
+      }
+      .progress-container {
+        width: 100%;
+        height: 10px;
+        background-color: #e0e0e0;
+        border-radius: 5px;
+        margin-top: 10px;
+        overflow: hidden;
+        display: none;
+      }
+      .progress-bar {
+        height: 100%;
+        background-color: #4CAF50;
+        width: 0%;
+        transition: width 0.3s;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h2>Transcription Manager</h2>
+        <div>
+          <button id="refreshButton" title="Refresh List"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg></button>
+          <button id="backButton">Back to Recorder</button>
+        </div>
+      </header>
+      
+      <!-- Upload moved to main page
+      <div class="upload-section">
+        <button id="uploadButton">Upload Audio</button>
+        <input type="file" id="fileUploadInput" accept=".mp3,.wav,.webm,.ogg,.m4a" style="display: none;">
+        <div id="uploadStatus" class="upload-status"></div>
+      </div>
+      -->
+      
+      <div class="file-list" id="fileList">
+        <div class="no-items">Loading audio files...</div>
+      </div>
+      
+      <div class="player-container" id="playerContainer">
+        <h3 id="currentFileName">Selected File</h3>
+        <audio id="audioPlayer" style="display:none;"></audio>
+        <div class="waveform-container">
+          <canvas id="waveform"></canvas>
+        </div>
+        <div class="audio-controls">
+          <button class="play-button" id="playButton">▶</button>
+          <div class="progress-bar" id="progressBar">
+            <div class="progress-bar-fill" id="progressBarFill"></div>
+          </div>
+          <div class="time-display" id="timeDisplay">00:00 / 00:00</div>
+        </div>
+      </div>
+      
+      <div class="transcription-container" id="transcriptionContainer">
+        <h3>Transcription</h3>
+        <div id="transcriptionText"></div>
+      </div>
+    </div>
+    
+    <script src="transcriptions.js"></script>
+  </body>
+</html> 
